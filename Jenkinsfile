@@ -17,7 +17,6 @@ pipeline {
     }
     stage('Push to GCR') {
       steps {
-        steps {
                 sh 'docker build -t gcr.io/steam-glass-377712/my-image .'
                 sh 'docker push gcr.io/steam-glass-377712/my-image'
       }
@@ -34,7 +33,7 @@ pipeline {
   }
 }
 
-}
+
 
 
 
