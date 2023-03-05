@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  environment {
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('steam-glass-377712-e31899b0be73.json')
+        // Replace 'gcr-service-account-key' with the ID of your Jenkins credentials containing the service account key JSON file.
+    }
   stages {
     stage('Checkout') {
       steps {
@@ -13,11 +17,9 @@ pipeline {
     }
     stage('Push to GCR') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'my-gcr-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh "docker login -u $USERNAME -p $PASSWORD https://gcr.io"
-          sh "docker tag my-image gcr.io/my-project/my-image"
-          sh "docker push gcr.io/my-project/my-image"
-        }
+        steps {
+                sh 'docker build -t gcr.io/steam-glass-377712/my-image .'
+                sh 'docker push gcr.io/steam-glass-377712/my-image'
       }
     }
     stage('Deploy to GKE') {
